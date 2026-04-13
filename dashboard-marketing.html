@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard de Marketing — Abril 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --bg2: #1a1a1a;
+    --bg3: #222;
+    --border: rgba(255,255,255,0.08);
+    --text: #e8e8e6;
+    --muted: #888;
+    --faint: #555;
+    --green: #1D9E75;
+    --pink: #D4537E;
+    --purple: #7F77DD;
+    --blue: #378ADD;
+    --amber: #EF9F27;
+    --red: #E24B4A;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .page-header {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .page-header p { color: var(--muted); font-size: 12px; }
+  .section-title {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin: 28px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .kpi-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  @media(max-width:700px) {
+    .kpi-grid, .kpi-grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .two-col, .three-col { grid-template-columns: 1fr; }
+  }
+  .kpi {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .kpi .label { font-size: 11px; color: var(--muted); margin-bottom: 5px; }
+  .kpi .value { font-size: 24px; font-weight: 600; color: #fff; line-height: 1; }
+  .kpi .delta { font-size: 11px; margin-top: 5px; }
+  .up { color: var(--green); }
+  .down { color: var(--red); }
+  .neu { color: var(--muted); }
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .card-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .bar-row .lbl { flex: 0 0 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-track { flex: 1; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 2px; }
+  .bar-val { flex: 0 0 50px; text-align: right; color: #fff; font-weight: 500; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { font-size: 10px; font-weight: 600; color: var(--faint); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); letter-spacing: 0.06em; text-transform: uppercase; }
+  td { padding: 8px 8px; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .badge-red { background: rgba(226,75,74,0.15); color: #f08080; }
+  .badge-yellow { background: rgba(239,159,39,0.15); color: #f0b060; }
+  .badge-green { background: rgba(29,158,117,0.15); color: #5dcaa5; }
+  .badge-blue { background: rgba(55,138,221,0.15); color: #85b7eb; }
+  .badge-gray { background: rgba(136,135,128,0.2); color: #aaa; }
+  .stat-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-val { font-weight: 600; color: #fff; }
+  .chart-wrap { position: relative; width: 100%; height: 160px; }
+  .chart-wrap-sm { position: relative; width: 100%; height: 130px; }
+  .vitals-bar { height: 6px; border-radius: 3px; overflow: hidden; display: flex; margin-bottom: 8px; }
+  .type-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+  .type-lbl { width: 60px; font-size: 12px; color: var(--muted); }
+  .type-pct { width: 36px; text-align: right; font-size: 12px; font-weight: 600; color: #fff; }
+  .thumb-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .thumb { background: var(--bg3); border-radius: 6px; padding: 10px 8px; text-align: center; }
+  .thumb .tv { font-size: 16px; font-weight: 700; color: #fff; }
+  .thumb .td { font-size: 10px; color: var(--muted); margin-top: 2px; }
+  .thumb .tt { font-size: 10px; color: var(--faint); }
+  .alert-table td:first-child { color: var(--muted); }
+  .hours-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+  .hours-lbl { width: 26px; font-size: 11px; color: var(--faint); }
+  .hours-val { width: 30px; text-align: right; font-size: 11px; font-weight: 600; color: #fff; }
+  .donut-section { display: flex; align-items: center; gap: 20px; }
+  .donut-wrap { position: relative; width: 90px; height: 90px; flex-shrink: 0; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 11px; color: var(--faint); text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>📊 Dashboard de Marketing</h1>
+  <p>Período: 01/04 – 13/04/2026 &nbsp;·&nbsp; Atualizado em: 13/04/2026</p>
+</div>
+
+<!-- E-COMMERCE -->
+<div class="section-title">🛒 E-commerce — Tray</div>
+<div class="kpi-grid">
+  <div class="kpi"><div class="label">Receita total</div><div class="value">R$1.700</div><div class="delta up">↑ +541% vs período ant.</div></div>
+  <div class="kpi"><div class="label">Vendas realizadas</div><div class="value">2</div><div class="delta up">↑ +100% vs período ant.</div></div>
+  <div class="kpi"><div class="label">Visitas à loja</div><div class="value">534</div><div class="delta down">↓ -38% vs período ant.</div></div>
+  <div class="kpi"><div class="label">Conversão loja</div><div class="value">0,19%</div><div class="delta up">↑ +58% vs período ant.</div></div>
+</div>
+
+<div class="two-col" style="margin-top:8px;">
+  <div class="card">
+    <div class="card-title">Mais vendidos</div>
+    <div class="bar-row"><span class="lbl">Calça Scrub Fem. Co...</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--purple);"></div></div><span class="bar-val">2 · R$571</span></div>
+    <div class="bar-row"><span class="lbl">Camisa Scrub Fem. ...</span><div class="bar-track"><div class="bar-fill" style="width:76%;background:var(--pink);"></div></div><span class="bar-val">2 · R$435</span></div>
+    <div class="bar-row"><span class="lbl">Jaleco Masc. Prime ...</span><div class="bar-track"><div class="bar-fill" style="width:66%;background:var(--blue);"></div></div><span class="bar-val">1 · R$378</span></div>
+    <div class="bar-row"><span class="lbl">Calça Masc. Alfaiataria</span><div class="bar-track"><div class="bar-fill" style="width:55%;background:var(--green);"></div></div><span class="bar-val">1 · R$317</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Status dos pedidos</div>
+    <div class="stat-row"><span>Enviado</span><span class="stat-val"><span class="badge badge-blue">50% · 2 pedidos</span></span></div>
+    <div class="stat-row"><span>Cancelado</span><span class="stat-val"><span class="badge badge-red">25% · 1 pedido</span></span></div>
+    <div class="stat-row"><span>Cancelado automaticamente</span><span class="stat-val"><span class="badge badge-gray">25% · 1 pedido</span></span></div>
+    <div style="margin-top:12px;font-size:11px;color:var(--faint);">R$1,7k confirmado · R$0 pendente · 100% pago</div>
+  </div>
+</div>
+
+<div class="two-col" style="margin-top:8px;">
+  <div class="card">
+    <div class="card-title">Mais vistos na loja</div>
+    <div class="bar-row"><span class="lbl">Camisa Scrub Masc. ...</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--blue);"></div></div><span class="bar-val">63</span></div>
+    <div class="bar-row"><span class="lbl">Camisa Scrub Masc. ...</span><div class="bar-track"><div class="bar-fill" style="width:94%;background:var(--blue);"></div></div><span class="bar-val">59</span></div>
+    <div class="bar-row"><span class="lbl">Camisa Scrub Fem. ...</span><div class="bar-track"><div class="bar-fill" style="width:94%;background:var(--pink);"></div></div><span class="bar-val">59</span></div>
+    <div class="bar-row"><span class="lbl">Camisa Scrub Masc. ...</span><div class="bar-track"><div class="bar-fill" style="width:89%;background:var(--blue);"></div></div><span class="bar-val">56</span></div>
+    <div class="bar-row"><span class="lbl">Calça Scrub Masc. C...</span><div class="bar-track"><div class="bar-fill" style="width:73%;background:var(--purple);"></div></div><span class="bar-val">46</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Termos mais buscados</div>
+    <div class="bar-row"><span class="lbl">scrub feminino zen</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--green);"></div></div><span class="bar-val">12</span></div>
+    <div class="bar-row"><span class="lbl">unissex touca clássica</span><div class="bar-track"><div class="bar-fill" style="width:83%;background:var(--green);"></div></div><span class="bar-val">10</span></div>
+    <div class="bar-row"><span class="lbl">scrub fem. harmonia</span><div class="bar-track"><div class="bar-fill" style="width:75%;background:var(--green);"></div></div><span class="bar-val">9</span></div>
+    <div class="bar-row"><span class="lbl">masc. gola italiana b2b</span><div class="bar-track"><div class="bar-fill" style="width:67%;background:var(--green);"></div></div><span class="bar-val">8</span></div>
+    <div class="bar-row"><span class="lbl">scrub conforto</span><div class="bar-track"><div class="bar-fill" style="width:67%;background:var(--green);"></div></div><span class="bar-val">8</span></div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:8px;">
+  <div class="card-title">Visitas diárias à loja — Tray</div>
+  <div class="chart-wrap">
+    <canvas id="visitasChart" role="img" aria-label="Visitas diárias à loja">Pico de 57 visitas em 03/04, queda progressiva até 13/04.</canvas>
+  </div>
+</div>
+
+<!-- RD STATION -->
+<div class="section-title">📡 RD Station — Tráfego e Leads</div>
+<div class="kpi-grid">
+  <div class="kpi"><div class="label">Total de visitas</div><div class="value">1.089</div><div class="delta neu">todos os canais</div></div>
+  <div class="kpi"><div class="label">Conversões rastreadas</div><div class="value">2</div><div class="delta neu">tráfego direto</div></div>
+  <div class="kpi"><div class="label">Leads — pop-up site</div><div class="value">2</div><div class="delta neu">abr · 12 em março</div></div>
+  <div class="kpi"><div class="label">Leads — WhatsApp</div><div class="value">2</div><div class="delta neu">abr · 5 em março</div></div>
+</div>
+
+<div class="two-col" style="margin-top:8px;">
+  <div class="card">
+    <div class="card-title">Visitas por canal</div>
+    <div class="bar-row"><span class="lbl">Mídia Paga</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--purple);"></div></div><span class="bar-val">608</span></div>
+    <div class="bar-row"><span class="lbl">Tráfego Direto</span><div class="bar-track"><div class="bar-fill" style="width:31%;background:var(--blue);"></div></div><span class="bar-val">190</span></div>
+    <div class="bar-row"><span class="lbl">Redes Sociais</span><div class="bar-track"><div class="bar-fill" style="width:23%;background:var(--pink);"></div></div><span class="bar-val">143</span></div>
+    <div class="bar-row"><span class="lbl">Busca Orgânica</span><div class="bar-track"><div class="bar-fill" style="width:19%;background:var(--green);"></div></div><span class="bar-val">113</span></div>
+    <div class="bar-row"><span class="lbl">Referências</span><div class="bar-track"><div class="bar-fill" style="width:3%;background:var(--amber);"></div></div><span class="bar-val">21</span></div>
+    <div class="bar-row"><span class="lbl">Outros</span><div class="bar-track"><div class="bar-fill" style="width:2%;background:#555;"></div></div><span class="bar-val">14</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Fonte de tráfego (sociais)</div>
+    <div class="bar-row"><span class="lbl">Link Bio RD Station</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--pink);"></div></div><span class="bar-val">95</span></div>
+    <div class="bar-row"><span class="lbl">Facebook</span><div class="bar-track"><div class="bar-fill" style="width:71%;background:var(--blue);"></div></div><span class="bar-val">67</span></div>
+    <div style="font-size:11px;font-weight:600;color:var(--faint);margin:10px 0 7px;text-transform:uppercase;letter-spacing:0.06em;">Referências externas</div>
+    <div class="bar-row"><span class="lbl">tsstudio.com.br</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--green);"></div></div><span class="bar-val">21</span></div>
+    <div class="bar-row"><span class="lbl">easycheckout.tray</span><div class="bar-track"><div class="bar-fill" style="width:10%;background:var(--green);"></div></div><span class="bar-val">2</span></div>
+    <div class="bar-row"><span class="lbl">gemini.google.com</span><div class="bar-track"><div class="bar-fill" style="width:5%;background:var(--green);"></div></div><span class="bar-val">1</span></div>
+  </div>
+</div>
+
+<!-- INSTAGRAM -->
+<div class="section-title">📱 Instagram — Redes Sociais</div>
+<div class="kpi-grid">
+  <div class="kpi"><div class="label">Visualizações totais</div><div class="value">59.044</div><div class="delta neu">17.777 contas alcançadas</div></div>
+  <div class="kpi"><div class="label">Seguidores</div><div class="value">1.400</div><div class="delta neu">total acumulado</div></div>
+  <div class="kpi"><div class="label">Interações</div><div class="value">399</div><div class="delta neu">51,1% seguidores</div></div>
+  <div class="kpi"><div class="label">Visitas ao perfil</div><div class="value">969</div><div class="delta neu">722 visitas · 247 links</div></div>
+</div>
+
+<div class="two-col" style="margin-top:8px;">
+  <div class="card">
+    <div class="card-title">Desempenho por formato</div>
+    <div style="margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--faint);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Visualizações</div>
+      <div class="type-row"><span class="type-lbl">Posts</span><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:65.6%;background:var(--pink);"></div></div><span class="type-pct">65,6%</span></div>
+      <div class="type-row"><span class="type-lbl">Stories</span><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:29.2%;background:var(--purple);"></div></div><span class="type-pct">29,2%</span></div>
+      <div class="type-row"><span class="type-lbl">Reels</span><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:5.2%;background:var(--amber);"></div></div><span class="type-pct">5,2%</span></div>
+    </div>
+    <div>
+      <div style="font-size:11px;color:var(--faint);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Interações</div>
+      <div class="type-row"><span class="type-lbl">Posts</span><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:90%;background:var(--pink);"></div></div><span class="type-pct">90%</span></div>
+      <div class="type-row"><span class="type-lbl">Reels</span><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:9.2%;background:var(--purple);"></div></div><span class="type-pct">9,2%</span></div>
+      <div class="type-row"><span class="type-lbl">Stories</span><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:0.8%;background:var(--amber);"></div></div><span class="type-pct">0,8%</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Alcance do público</div>
+    <div class="donut-section" style="margin-bottom:16px;">
+      <div class="donut-wrap">
+        <canvas id="donutChart" width="90" height="90" role="img" aria-label="85,8% não seguidores, 14,2% seguidores">85,8% não seguidores, 14,2% seguidores.</canvas>
+      </div>
+      <div>
+        <div class="legend-item"><span class="dot" style="background:var(--pink);"></span>Não seguidores — 85,8%</div>
+        <div class="legend-item"><span class="dot" style="background:var(--purple);"></span>Seguidores — 14,2%</div>
+      </div>
+    </div>
+    <div style="font-size:11px;font-weight:600;color:var(--faint);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;">Horários mais ativos (segunda)</div>
+    <div class="hours-row"><span class="hours-lbl">15h</span><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:100%;background:var(--pink);"></div></div><span class="hours-val">745</span></div>
+    <div class="hours-row"><span class="hours-lbl">12h</span><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:93%;background:var(--pink);"></div></div><span class="hours-val">694</span></div>
+    <div class="hours-row"><span class="hours-lbl">9h</span><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:92%;background:var(--pink);"></div></div><span class="hours-val">686</span></div>
+    <div class="hours-row"><span class="hours-lbl">6h</span><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:90%;background:var(--pink);"></div></div><span class="hours-val">667</span></div>
+    <div class="hours-row"><span class="hours-lbl">18h</span><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:61%;background:var(--pink);"></div></div><span class="hours-val">457</span></div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:8px;">
+  <div class="card-title">Top conteúdos por visualizações</div>
+  <div class="thumb-grid">
+    <div class="thumb"><div class="tv">311</div><div class="td">17 mar</div><div class="tt">Post</div></div>
+    <div class="thumb"><div class="tv">287</div><div class="td">3 abr</div><div class="tt">Carrossel</div></div>
+    <div class="thumb"><div class="tv">207</div><div class="td">23 mar</div><div class="tt">Post</div></div>
+    <div class="thumb"><div class="tv">200</div><div class="td">15 mar</div><div class="tt">Post</div></div>
+    <div class="thumb"><div class="tv">172</div><div class="td">29 mar</div><div class="tt">Reel</div></div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:8px;">
+  <div class="card-title">Top conteúdos por interações</div>
+  <div class="thumb-grid">
+    <div class="thumb"><div class="tv">14</div><div class="td">15 mar</div><div class="tt">Post</div></div>
+    <div class="thumb"><div class="tv">9</div><div class="td">2 abr</div><div class="tt">Post</div></div>
+    <div class="thumb"><div class="tv">9</div><div class="td">29 mar</div><div class="tt">Reel</div></div>
+    <div class="thumb"><div class="tv">8</div><div class="td">7 abr</div><div class="tt">Post</div></div>
+    <div class="thumb"><div class="tv">8</div><div class="td">25 mar</div><div class="tt">Post</div></div>
+  </div>
+</div>
+
+<!-- CLARITY -->
+<div class="section-title">🔍 Microsoft Clarity — Comportamento</div>
+<div class="kpi-grid">
+  <div class="kpi"><div class="label">Usuários únicos</div><div class="value">133</div><div class="delta neu">total no período</div></div>
+  <div class="kpi"><div class="label">Total de sessões</div><div class="value">162</div><div class="delta neu">novos + retornados</div></div>
+  <div class="kpi"><div class="label">Novos usuários</div><div class="value">94,4%</div><div class="delta neu">153 sessões</div></div>
+  <div class="kpi"><div class="label">Retornos rápidos</div><div class="value">29%</div><div class="delta down">47 sessões ⚠</div></div>
+</div>
+
+<div class="two-col" style="margin-top:8px;">
+  <div class="card">
+    <div class="card-title">Core Web Vitals · 74/100</div>
+    <div class="vitals-bar">
+      <div style="width:45.1%;background:var(--green);"></div>
+      <div style="width:52.2%;background:var(--amber);"></div>
+      <div style="width:2.7%;background:var(--red);"></div>
+    </div>
+    <div style="display:flex;gap:12px;font-size:11px;color:var(--muted);margin-bottom:14px;">
+      <span><span class="dot" style="background:var(--green);display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px;"></span>45,1% bom</span>
+      <span><span class="dot" style="background:var(--amber);display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px;"></span>52,2% melhorar</span>
+      <span><span class="dot" style="background:var(--red);display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px;"></span>2,7% ruim</span>
+    </div>
+    <div class="stat-row"><span>LCP (carregamento)</span><span class="stat-val" style="color:var(--red);">4,6s ⚠ meta &lt;2,5s</span></div>
+    <div class="stat-row"><span>INP (interatividade)</span><span class="stat-val" style="color:var(--amber);">280ms</span></div>
+    <div class="stat-row"><span>CLS (estabilidade)</span><span class="stat-val" style="color:var(--amber);">0,13</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Origem do tráfego (Clarity)</div>
+    <div class="bar-row"><span class="lbl">Instagram</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--pink);"></div></div><span class="bar-val">73</span></div>
+    <div class="bar-row"><span class="lbl">Direct</span><div class="bar-track"><div class="bar-fill" style="width:81%;background:var(--purple);"></div></div><span class="bar-val">59</span></div>
+    <div class="bar-row"><span class="lbl">Facebook</span><div class="bar-track"><div class="bar-fill" style="width:42%;background:var(--blue);"></div></div><span class="bar-val">31</span></div>
+    <div class="bar-row"><span class="lbl">RD Station Bio</span><div class="bar-track"><div class="bar-fill" style="width:16%;background:var(--green);"></div></div><span class="bar-val">12</span></div>
+    <div class="bar-row"><span class="lbl">Google</span><div class="bar-track"><div class="bar-fill" style="width:10%;background:var(--amber);"></div></div><span class="bar-val">7</span></div>
+    <div class="bar-row"><span class="lbl">TSS Studio</span><div class="bar-track"><div class="bar-fill" style="width:3%;background:#555;"></div></div><span class="bar-val">2</span></div>
+  </div>
+</div>
+
+<!-- ALERTAS -->
+<div class="section-title">🚨 Alertas e Oportunidades</div>
+<div class="card">
+  <table class="alert-table">
+    <thead><tr><th>Situação</th><th>Prioridade</th><th>Ação sugerida</th></tr></thead>
+    <tbody>
+      <tr><td>Mídia paga: 608 visitas → 0 conversões rastreadas</td><td><span class="badge badge-red">Crítico</span></td><td>Revisar pixel e rastreamento</td></tr>
+      <tr><td>LCP médio 4,6s — afeta 89,5% mobile</td><td><span class="badge badge-red">Crítico</span></td><td>Otimizar imagens e scripts</td></tr>
+      <tr><td>29% retornos rápidos — experiência inicial fraca</td><td><span class="badge badge-yellow">Atenção</span></td><td>Melhorar landing pages</td></tr>
+      <tr><td>Conversão 0,19% — benchmark fashion 1,5–2%</td><td><span class="badge badge-yellow">Atenção</span></td><td>Testar CTAs e checkout</td></tr>
+      <tr><td>50% dos pedidos cancelados</td><td><span class="badge badge-yellow">Atenção</span></td><td>Analisar motivos de cancelamento</td></tr>
+      <tr><td>Instagram: maior fonte real de tráfego (73 sessões)</td><td><span class="badge badge-green">Oportunidade</span></td><td>Aumentar frequência de posts</td></tr>
+      <tr><td>85,8% das views vêm de não-seguidores</td><td><span class="badge badge-green">Oportunidade</span></td><td>Apostar em conteúdo de topo de funil</td></tr>
+      <tr><td>Horário ideal: 15h às segundas-feiras</td><td><span class="badge badge-green">Oportunidade</span></td><td>Programar posts nesse horário</td></tr>
+      <tr><td>Receita +541% vs período anterior</td><td><span class="badge badge-blue">Positivo</span></td><td>Manter estratégia atual</td></tr>
+      <tr><td>Melhores URLs já têm LCP 1,6–2,2s</td><td><span class="badge badge-blue">Positivo</span></td><td>Replicar padrão para outras páginas</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>Dashboard de Marketing · Gerado em 13/04/2026 · Para atualizar os dados, edite os valores diretamente no arquivo HTML</footer>
+
+<script>
+const green = '#1D9E75', pink = '#D4537E', purple = '#7F77DD', blue = '#378ADD', amber = '#EF9F27';
+const gridColor = 'rgba(255,255,255,0.06)';
+const tickColor = 'rgba(255,255,255,0.35)';
+
+new Chart(document.getElementById('visitasChart'), {
+  type: 'line',
+  data: {
+    labels: ['01/04','02','03','04','05','06','07','08','09','10','11','12','13'],
+    datasets: [{
+      label: 'Visitas',
+      data: [25,42,57,51,48,42,35,33,37,48,35,28,18],
+      borderColor: green,
+      backgroundColor: 'rgba(29,158,117,0.1)',
+      fill: true,
+      tension: 0.4,
+      pointRadius: 3,
+      pointBackgroundColor: green,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } } },
+      y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } }, min: 10 }
+    }
+  }
+});
+
+new Chart(document.getElementById('donutChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Não seguidores','Seguidores'],
+    datasets: [{
+      data: [85.8, 14.2],
+      backgroundColor: [pink, purple],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: false,
+    plugins: { legend: { display: false }, tooltip: { enabled: false } },
+    cutout: '70%'
+  }
+});
+</script>
+</body>
+</html>
