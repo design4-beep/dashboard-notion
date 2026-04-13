@@ -197,7 +197,14 @@ const DADOS = {
   .section-title { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); margin: 28px 0 12px; display: flex; align-items: center; gap: 8px; }
   .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  @media(max-width:700px) { .kpi-grid { grid-template-columns: repeat(2,1fr); } .two-col,.three-col { grid-template-columns: 1fr; } }
+  @media(max-width:700px) {
+    .kpi-grid { grid-template-columns: repeat(2,1fr); }
+    .two-col, .three-col { grid-template-columns: 1fr; }
+    .thumb-grid { grid-template-columns: repeat(3,1fr); }
+    .bar-row .lbl { flex: 0 0 110px; }
+    .donut-section { flex-direction: column; align-items: flex-start; }
+    body { padding: 16px; }
+  }
   .kpi { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
   .kpi .label { font-size: 11px; color: var(--muted); margin-bottom: 5px; }
   .kpi .value { font-size: 24px; font-weight: 600; color: #fff; line-height: 1; }
@@ -221,9 +228,9 @@ const DADOS = {
   .badge-green  { background: rgba(29,158,117,0.15);  color: #5dcaa5; }
   .badge-blue   { background: rgba(55,138,221,0.15);  color: #85b7eb; }
   .badge-gray   { background: rgba(136,135,128,0.2);  color: #aaa;    }
-  .stat-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
+  .stat-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; flex-wrap: wrap; }
   .stat-row:last-child { border-bottom: none; }
-  .stat-val { font-weight: 600; color: #fff; }
+  .stat-val { font-weight: 600; color: #fff; flex-shrink: 0; }
   .chart-wrap { position: relative; width: 100%; height: 160px; }
   .vitals-bar { height: 6px; border-radius: 3px; overflow: hidden; display: flex; margin-bottom: 8px; }
   .type-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
