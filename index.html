@@ -190,7 +190,8 @@ const DADOS = {
     --gray: #888;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, system-ui, sans-serif; font-size: 13px; line-height: 1.5; padding: 24px; max-width: 1100px; margin: 0 auto; }
+  html, body { height: 100%; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, system-ui, sans-serif; font-size: 13px; line-height: 1.5; padding: 24px; max-width: 1100px; margin: 0 auto; overflow-y: auto; }
   .page-header { margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
   .page-header h1 { font-size: 22px; font-weight: 600; color: #fff; margin-bottom: 4px; }
   .page-header p { color: var(--muted); font-size: 12px; }
