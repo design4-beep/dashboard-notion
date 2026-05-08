@@ -1,1 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard de Marketing — TS Studio</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 
+<script>
+/* ============================================================
+   ✏️  EDITE AQUI — Todos os dados do dashboard estão abaixo
+   ============================================================ */
+
+const DADOS = {
+
+  periodo: "Jan–Mai/2026 (dados até 06/05/2026)",
+  atualizadoEm: "08/05/2026",
+
+  /* 📧 E-mail Marketing */
+  email: {
+    campanhas: [
+      { nome: "Agora vamos estar mais próximos", data: "11/03", leads: 208,  entrega: "98,08%", abertura: "27,45%", cliques: "0,98%",  bounces: "—",      status: "ok"        },
+      { nome: "Projeto Copa",                    data: "16/03", leads: 447,  entrega: "85,00%", abertura: "27,01%", cliques: "2,94%",  bounces: "—",      status: "ok"        },
+      { nome: "Duplicado de Projeto Copa 2",     data: "17/03", leads: 392,  entrega: "94,88%", abertura: "27,76%", cliques: "2,70%",  bounces: "—",      status: "ok"        },
+      { nome: "Coleção Cápsula–2026–01",         data: "28/04", leads: 1844, entrega: "56,12%", abertura: "13,01%", cliques: "0,51%",  bounces: "43,88%", status: "alerta"    },
+    ],
+    engajamento: [
+      { label: "Leads engajados",      valor: "5% – 18%",  tipo: "up"   },
+      { label: "Leads indeterminados", valor: "> 60%",      tipo: "down" },
+      { label: "Bounce (Cápsula)",     valor: "43,88%",     tipo: "down" },
+    ],
+    /* dados para gráfico */
+    grafAberturaLabels:  ['Próximos','Copa','Copa 2','Cápsula'],
+    grafAberturaData:    [27.45, 27.01, 27.76, 13.01],
+    grafLeadsLabels:     ['Próximos','Copa','Copa 2','Cápsula'],
+    grafLeadsData:       [208, 447, 392, 1844],
+  },
+
+  /* 🌐 Site */
+  site: {
+    totalVisitas:   { valor: "1.461",  delta: "Jan a 06/mai/2026",   tipo: "neu"  },
+    totalUsuarios:  { valor: "1.676",  delta: "período completo",     tipo: "neu"  },
+    novosUsuarios:  { valor: "1.228",  delta: "↑ 73% do total",       tipo: "up"   },
+    conversao:      { valor: "0%",     delta: "↓ 0 pedidos aprovados",tipo: "down" },
+    totalPaginas:   "3.879",
+
+    visitasMensais: {
+      labels: ['Jan/26','Fev/26','Mar/26','Abr/26','Mai/26*'],
+      data:   [99, 177, 690, 451, 44],
+      picos:  ['pico 26/01', 'pico 03/02', 'pico 16/03 · 96 vis.', 'pico 27/04 · 86 vis.', 'até 06/05'],
+    },
+  },
+
+  /* 📋 Newsletter */
+  newsletter: {
+    totalRegistros: { valor: "16",        delta: "contatos na base",               tipo: "neu" },
+    picoMes:        { valor: "Mar/2026",  delta: "↑ concentração dias 18 e 19",    tipo: "up"  },
+    ultimoRegistro: "1º de abril/2026 · Jessica",
+    dominios:       "@gmail.com · @hotmail.com · @terezasantos.com.br · @vistabiio.com.br",
+  },
+
+  /* 🔗 Links clicados */
+  links: [
+    { nome: "Home (tsstudio.com.br)", pct: 100, val: "Maior vol.", cor: "blue"   },
+    { nome: "Instagram",              pct: 60,  val: "Secundário", cor: "pink"   },
+    { nome: "WhatsApp",               pct: 50,  val: "Secundário", cor: "green"  },
+    { nome: "Blog",                   pct: 20,  val: "Menor vol.", cor: "muted"  },
+    { nome: "Contato",                pct: 15,  val: "Menor vol.", cor: "muted"  },
+  ],
+
+  /* 🚨 Alertas */
+  alertas: [
+    { situacao: "Coleção Cápsula com bounce de até 43,88%",              prioridade: "Crítico",      badge: "red",    acao: "Higienizar lista antes do próximo envio"           },
+    { situacao: "Taxa de conversão 0% — zero pedidos aprovados",         prioridade: "Crítico",      badge: "red",    acao: "Revisar jornada de compra e CTA do site"           },
+    { situacao: "Base com +60% de leads indeterminados",                  prioridade: "Atenção",      badge: "yellow", acao: "Reengajar ou remover contatos inativos"            },
+    { situacao: "Coleção Cápsula: abertura 13% vs 27% das demais",       prioridade: "Atenção",      badge: "yellow", acao: "Revisar assunto e segmentação de envio"            },
+    { situacao: "Lista de newsletter com apenas 16 registros",            prioridade: "Atenção",      badge: "yellow", acao: "Criar estratégia ativa de captação de leads"       },
+    { situacao: "Março com pico de 690 visitas (+290% vs fev)",          prioridade: "Positivo",     badge: "blue",   acao: "Identificar o que impulsionou e replicar"          },
+    { situacao: "Campanhas mar/26 com abertura acima de 27%",            prioridade: "Positivo",     badge: "blue",   acao: "Manter frequência e formato dessas campanhas"      },
+    { situacao: "Instagram e WhatsApp como canais de interação",          prioridade: "Oportunidade", badge: "green",  acao: "Ampliar integração entre e-mail e redes sociais"   },
+  ],
+};
+/* ============================================================
+   FIM DOS DADOS — não edite abaixo desta linha
+   ============================================================ */
+</script>
+
+<style>
+  :root {
+    --bg: #191919; --bg2: #222222; --bg3: #2a2a2a;
+    --border: rgba(255,255,255,0.08); --text: #e8e8e6;
+    --muted: #888; --faint: #555;
+    --green: #1D9E75; --pink: #D4537E; --purple: #7F77DD;
+    --blue: #378ADD; --amber: #EF9F27; --red: #E24B4A;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, system-ui, sans-serif; font-size: 13px; line-height: 1.5; padding: 24px; max-width: 1100px; margin: 0 auto; }
+  .page-header { margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+  .page-header h1 { font-size: 22px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .page-header p { color: var(--muted); font-size: 12px; }
+  .section-title { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); margin: 28px 0 12px; display: flex; align-items: center; gap: 8px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .kpi-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  @media(max-width:700px) { .kpi-grid, .kpi-grid-2, .two-col { grid-template-columns: repeat(2,1fr); } body { padding: 16px; } }
+  .kpi { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+  .kpi .label { font-size: 11px; color: var(--muted); margin-bottom: 5px; }
+  .kpi .value { font-size: 24px; font-weight: 600; color: #fff; line-height: 1; }
+  .kpi .delta { font-size: 11px; margin-top: 5px; }
+  .up { color: var(--green); } .down { color: var(--red); } .neu { color: var(--muted); }
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .card-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 12px; color: var(--muted); }
+  .bar-row .lbl { flex: 0 0 190px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-track { flex: 1; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 2px; }
+  .bar-val { flex: 0 0 70px; text-align: right; color: #fff; font-weight: 500; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { font-size: 10px; font-weight: 600; color: var(--faint); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); letter-spacing: 0.06em; text-transform: uppercase; }
+  td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+  .badge-red    { background: rgba(226,75,74,0.15);   color: #f08080; }
+  .badge-yellow { background: rgba(239,159,39,0.15);  color: #f0b060; }
+  .badge-green  { background: rgba(29,158,117,0.15);  color: #5dcaa5; }
+  .badge-blue   { background: rgba(55,138,221,0.15);  color: #85b7eb; }
+  .badge-gray   { background: rgba(136,135,128,0.2);  color: #aaa;    }
+  .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-val { font-weight: 600; color: #fff; }
+  .chart-wrap { position: relative; width: 100%; height: 180px; }
+  .alert-note { background: rgba(226,75,74,0.08); border: 1px solid rgba(226,75,74,0.25); border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #f08080; margin-top: 10px; }
+  .info-table td:first-child { color: var(--muted); width: 200px; }
+  footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 11px; color: var(--faint); text-align: center; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+const COR = { blue: 'var(--blue)', pink: 'var(--pink)', green: 'var(--green)', amber: 'var(--amber)', purple: 'var(--purple)', muted: 'var(--faint)' };
+
+function kpi(label, obj) {
+  return `<div class="kpi"><div class="label">${label}</div><div class="value">${obj.valor}</div><div class="delta ${obj.tipo}">${obj.delta}</div></div>`;
+}
+function barRow(item) {
+  const cor = COR[item.cor] || 'var(--purple)';
+  return `<div class="bar-row"><span class="lbl">${item.nome}</span><div class="bar-track"><div class="bar-fill" style="width:${item.pct}%;background:${cor};"></div></div><span class="bar-val">${item.val}</span></div>`;
+}
+
+const D = DADOS, E = D.email, S = D.site, N = D.newsletter;
+
+document.getElementById('app').innerHTML = `
+<div class="page-header">
+  <h1>📊 Dashboard de Marketing — TS Studio</h1>
+  <p>Período: ${D.periodo} &nbsp;·&nbsp; Atualizado em: ${D.atualizadoEm}</p>
+</div>
+
+<div class="section-title">📧 E-mail Marketing</div>
+<div class="card">
+  <div class="card-title">Campanhas enviadas</div>
+  <table>
+    <thead><tr><th>Campanha</th><th>Data</th><th>Leads</th><th>Entrega</th><th>Abertura</th><th>Cliques</th><th>Bounce</th></tr></thead>
+    <tbody>
+      ${E.campanhas.map(c => `<tr>
+        <td>${c.nome}${c.status === 'alerta' ? ' <span class="badge badge-red">Atenção</span>' : ''}</td>
+        <td style="color:var(--muted);">${c.data}</td>
+        <td>${c.leads.toLocaleString('pt-BR')}</td>
+        <td>${c.entrega}</td>
+        <td>${c.abertura}</td>
+        <td>${c.cliques}</td>
+        <td style="color:${c.status === 'alerta' ? 'var(--red)' : 'var(--muted)'};">${c.bounces}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table>
+  <div class="alert-note">⚠ "Coleção Cápsula–2026–01" apresentou bounce de até 43,88% — a base precisa de higienização antes do próximo envio.</div>
+</div>
+
+<div class="two-col" style="margin-top:8px;">
+  <div class="card">
+    <div class="card-title">Taxa de abertura por campanha (%)</div>
+    <div class="chart-wrap"><canvas id="aberturaChart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Volume de leads por campanha</div>
+    <div class="chart-wrap"><canvas id="leadsChart"></canvas></div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:8px;">
+  <div class="card-title">Engajamento geral da base</div>
+  ${E.engajamento.map(e => `<div class="stat-row"><span>${e.label}</span><span class="stat-val ${e.tipo}">${e.valor}</span></div>`).join('')}
+</div>
+
+<div class="section-title">🌐 Performance do Site (Jan–Mai/2026)</div>
+<div class="kpi-grid">
+  ${kpi('Total de visitas', S.totalVisitas)}
+  ${kpi('Total de usuários', S.totalUsuarios)}
+  ${kpi('Novos usuários', S.novosUsuarios)}
+  ${kpi('Taxa de conversão', S.conversao)}
+</div>
+
+<div class="two-col" style="margin-top:8px;">
+  <div class="card">
+    <div class="card-title">Visitas mensais ao site — 2026</div>
+    <div class="chart-wrap"><canvas id="visitasChart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Destaques mensais</div>
+    ${S.visitasMensais.labels.map((l, i) => `
+      <div class="bar-row">
+        <span class="lbl">${l} <span style="font-size:10px;color:var(--faint);">(${S.visitasMensais.picos[i]})</span></span>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.round(S.visitasMensais.data[i]/6.9)}%;background:${['var(--purple)','var(--purple)','var(--green)','var(--pink)','var(--amber)'][i]};"></div></div>
+        <span class="bar-val">${S.visitasMensais.data[i]} vis.</span>
+      </div>`).join('')}
+    <div style="margin-top:10px;font-size:11px;color:var(--faint);">Total de páginas visitadas: ${S.totalPaginas} &nbsp;·&nbsp; *Maio parcial até 06/05</div>
+  </div>
+</div>
+
+<div class="section-title">📋 Newsletter — Cadastros</div>
+<div class="kpi-grid-2">
+  ${kpi('Total de registros', N.totalRegistros)}
+  ${kpi('Pico de cadastros', N.picoMes)}
+</div>
+<div class="card" style="margin-top:8px;">
+  <div class="card-title">Detalhes da base</div>
+  <table class="info-table">
+    <tbody>
+      <tr><td>Último registro</td><td>${N.ultimoRegistro}</td></tr>
+      <tr><td>Domínios presentes</td><td>${N.dominios}</td></tr>
+      <tr><td>Engajamento estimado</td><td>5% a 18% dependendo da campanha</td></tr>
+      <tr><td>Leads indeterminados</td><td>Maior fatia — frequentemente acima de 60% da base</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section-title">🔗 Links mais clicados</div>
+<div class="card">
+  ${D.links.map(barRow).join('')}
+</div>
+
+<div class="section-title">🚨 Alertas e Oportunidades</div>
+<div class="card">
+  <table>
+    <thead><tr><th>Situação</th><th>Prioridade</th><th>Ação sugerida</th></tr></thead>
+    <tbody>
+      ${D.alertas.map(a => `<tr>
+        <td style="color:var(--muted);">${a.situacao}</td>
+        <td><span class="badge badge-${a.badge}">${a.prioridade}</span></td>
+        <td>${a.acao}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table>
+</div>
+
+<footer>Dashboard de Marketing · TS Studio · Gerado em ${D.atualizadoEm} · Para atualizar os dados, edite a seção DADOS no topo do arquivo HTML</footer>
+`;
+
+const purple = '#7F77DD', green = '#1D9E75', pink = '#D4537E', amber = '#EF9F27', blue = '#378ADD';
+const gridColor = 'rgba(255,255,255,0.06)', tickColor = 'rgba(255,255,255,0.35)';
+const scl = {
+  x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 }, autoSkip: false, maxRotation: 30 } },
+  y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } } }
+};
+
+new Chart(document.getElementById('aberturaChart'), {
+  type: 'bar',
+  data: {
+    labels: E.grafAberturaLabels,
+    datasets: [{ label: 'Abertura %', data: E.grafAberturaData,
+      backgroundColor: [purple+'88',purple+'88',purple+'88',pink+'99'],
+      borderColor: [purple,purple,purple,pink], borderWidth: 1, borderRadius: 4 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.raw + '%' } } },
+    scales: scl }
+});
+
+new Chart(document.getElementById('leadsChart'), {
+  type: 'bar',
+  data: {
+    labels: E.grafLeadsLabels,
+    datasets: [{ label: 'Leads', data: E.grafLeadsData,
+      backgroundColor: [green+'66',green+'66',green+'66',amber+'99'],
+      borderColor: [green,green,green,amber], borderWidth: 1, borderRadius: 4 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: scl }
+});
+
+new Chart(document.getElementById('visitasChart'), {
+  type: 'bar',
+  data: {
+    labels: S.visitasMensais.labels,
+    datasets: [{ label: 'Visitas', data: S.visitasMensais.data,
+      backgroundColor: [purple+'66',purple+'66',green+'cc',pink+'88',amber+'77'],
+      borderColor: [purple,purple,green,pink,amber], borderWidth: 1, borderRadius: 4 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.raw + ' visitas' } } },
+    scales: scl }
+});
+</script>
+</body>
+</html>
