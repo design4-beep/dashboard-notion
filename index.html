@@ -15,163 +15,97 @@
 const DADOS = {
 
   /* Cabeçalho */
-  periodo: "01/04 – 13/04/2026",
-  atualizadoEm: "13/04/2026",
+  periodo: "Abril/2026 (mês completo)",
+  atualizadoEm: "30/04/2026",
 
   /* 🛒 E-commerce — Tray */
   ecommerce: {
-    receita:           { valor: "R$1.700",  delta: "↑ +541% vs período ant.", tipo: "up" },
-    vendas:            { valor: "2",        delta: "↑ +100% vs período ant.", tipo: "up" },
-    visitas:           { valor: "534",      delta: "↓ -38% vs período ant.",  tipo: "down" },
-    conversao:         { valor: "0,19%",    delta: "↑ +58% vs período ant.",  tipo: "up" },
+    receita:           { valor: "R$5.424",    delta: "↑ +96,4% vs março/26",   tipo: "up"   },
+    vendas:            { valor: "3",           delta: "→ estável vs março/26",  tipo: "neu"  },
+    visitas:           { valor: "2.773",       delta: "↓ -18% vs março/26",     tipo: "down" },
+    conversao:         { valor: "0,11%",       delta: "↓ -8,3% vs março/26",    tipo: "down" },
 
     maisVendidos: [
-      { nome: "Calça Scrub Fem. Co...",    pct: 100, val: "2 · R$571", cor: "purple" },
-      { nome: "Camisa Scrub Fem. ...",     pct: 76,  val: "2 · R$435", cor: "pink"   },
-      { nome: "Jaleco Masc. Prime ...",    pct: 66,  val: "1 · R$378", cor: "blue"   },
-      { nome: "Calça Masc. Alfaiataria",   pct: 55,  val: "1 · R$317", cor: "green"  },
+      { nome: "Blusa Serena Decote Drapeado",        pct: 100, val: "4 · R$1.184", cor: "pink"   },
+      { nome: "Blazer Fem. Alfaiataria Mila Taylor", pct: 82,  val: "2 · R$974",   cor: "purple" },
+      { nome: "Camisa Essencial M. Longa c/ Pregas", pct: 58,  val: "2 · R$689",   cor: "blue"   },
     ],
 
     statusPedidos: [
-      { nome: "Enviado",                  badge: "blue",  texto: "50% · 2 pedidos" },
-      { nome: "Cancelado",               badge: "red",   texto: "25% · 1 pedido"  },
-      { nome: "Cancelado automaticamente", badge: "gray", texto: "25% · 1 pedido"  },
+      { nome: "Cancelado automaticamente", badge: "gray",   texto: "33,33% · 2 pedidos" },
+      { nome: "Finalizado",                badge: "green",  texto: "33,33% · 2 pedidos" },
+      { nome: "Cancelado",                 badge: "red",    texto: "16,67% · 1 pedido"  },
+      { nome: "Enviado",                   badge: "blue",   texto: "16,67% · 1 pedido"  },
     ],
-    statusRodape: "R$1,7k confirmado · R$0 pendente · 100% pago",
+    statusRodape: "Ticket médio: R$1.994,20 · R$5,4k confirmado",
 
     maisVistos: [
-      { nome: "Camisa Scrub Masc. ...", pct: 100, val: "63", cor: "blue"   },
-      { nome: "Camisa Scrub Masc. ...", pct: 94,  val: "59", cor: "blue"   },
-      { nome: "Camisa Scrub Fem. ...",  pct: 94,  val: "59", cor: "pink"   },
-      { nome: "Camisa Scrub Masc. ...", pct: 89,  val: "56", cor: "blue"   },
-      { nome: "Calça Scrub Masc. C...", pct: 73,  val: "46", cor: "purple" },
+      { nome: "Feminino",    pct: 100, val: "201", cor: "pink"   },
+      { nome: "Acessórios",  pct: 81,  val: "163", cor: "amber"  },
+      { nome: "Scrubs",      pct: 62,  val: "125", cor: "blue"   },
+      { nome: "Healthwear",  pct: 57,  val: "114", cor: "green"  },
     ],
 
     buscas: [
-      { nome: "scrub feminino zen",        pct: 100, val: "12" },
-      { nome: "unissex touca clássica",    pct: 83,  val: "10" },
-      { nome: "scrub fem. harmonia",       pct: 75,  val: "9"  },
-      { nome: "masc. gola italiana b2b",   pct: 67,  val: "8"  },
-      { nome: "scrub conforto",            pct: 67,  val: "8"  },
+      { nome: "scrub feminino harmonia",          pct: 100, val: "16" },
+      { nome: "conjunto scrub feminino zen",       pct: 94,  val: "15" },
+      { nome: "camisa essencial button down b2b",  pct: 81,  val: "13" },
     ],
 
-    /* Gráfico visitas diárias — labels e valores */
+    /* Gráfico receita mensal — comparativo */
     visitasGrafico: {
-      labels: ['01/04','02','03','04','05','06','07','08','09','10','11','12','13'],
-      dados:  [25, 42, 57, 51, 48, 42, 35, 33, 37, 48, 35, 28, 18],
+      labels: ['Jan/26','Fev/26','Mar/26','Abr/26'],
+      dados:  [2104, 3037, 3383, 2773],
     },
   },
 
-  /* 📡 RD Station */
+  /* 📧 E-mail Marketing */
+  email: {
+    campanhasAbril: [
+      { nome: "BiiO & Tech",          data: "27/04", enviados: 822,   entrega: "87,71%", abertura: "9,57%",  cliques: "0,14%", bounces: 101,   status: "ok"        },
+      { nome: "Alfaiataria Premium",  data: "29/04", enviados: 6884,  entrega: "77,03%", abertura: "13,69%", cliques: "0,94%", bounces: 1581,  status: "ok"        },
+      { nome: "BiiO & Tech (bloq.)",  data: "27/04", enviados: 2915,  entrega: "55,16%", abertura: "20,09%", cliques: "1,99%", bounces: 1307,  status: "bloqueada" },
+    ],
+    historico: [
+      { nome: "Promoção Verão 2026",     data: "02/02", enviados: 117,  entrega: "92,31%", abertura: "17,59%", cliques: "2,78%", bounces: 9   },
+      { nome: "Queridinhos do Mês",      data: "10/03", enviados: 660,  entrega: "95,61%", abertura: "19,02%", cliques: "1,58%", bounces: 29  },
+      { nome: "Dia do Consumidor 01",    data: "13/03", enviados: 432,  entrega: "97,22%", abertura: "16,19%", cliques: "0,71%", bounces: 12  },
+      { nome: "Dia do Consumidor 02",    data: "14/03", enviados: 431,  entrega: "97,22%", abertura: "15,75%", cliques: "0,95%", bounces: 12  },
+      { nome: "Dia do Consumidor 03",    data: "15/03", enviados: 430,  entrega: "97,21%", abertura: "14,83%", cliques: "0,48%", bounces: 12  },
+    ],
+  },
+
+  /* 📡 RD Station — Leads */
   rd: {
-    totalVisitas:    { valor: "1.089", delta: "todos os canais",    tipo: "neu" },
-    conversoes:      { valor: "2",     delta: "tráfego direto",     tipo: "neu" },
-    leadsPopup:      { valor: "2",     delta: "abr · 12 em março",  tipo: "neu" },
-    leadsWhatsapp:   { valor: "2",     delta: "abr · 5 em março",   tipo: "neu" },
+    leadsPopup:      { valor: "1",   delta: "abr · 12 em março",   tipo: "down" },
+    leadsWhatsapp:   { valor: "11",  delta: "abr · 5 em março",    tipo: "up"   },
 
-    visitasCanal: [
-      { nome: "Mídia Paga",      pct: 100, val: "608", cor: "purple" },
-      { nome: "Tráfego Direto",  pct: 31,  val: "190", cor: "blue"   },
-      { nome: "Redes Sociais",   pct: 23,  val: "143", cor: "pink"   },
-      { nome: "Busca Orgânica",  pct: 19,  val: "113", cor: "green"  },
-      { nome: "Referências",     pct: 3,   val: "21",  cor: "amber"  },
-      { nome: "Outros",          pct: 2,   val: "14",  cor: "gray"   },
-    ],
-
-    sociais: [
-      { nome: "Link Bio RD Station", pct: 100, val: "95", cor: "pink" },
-      { nome: "Facebook",            pct: 71,  val: "67", cor: "blue" },
-    ],
-    referencias: [
-      { nome: "tsstudio.com.br",        pct: 100, val: "21", cor: "green" },
-      { nome: "easycheckout.tray",      pct: 10,  val: "2",  cor: "green" },
-      { nome: "gemini.google.com",      pct: 5,   val: "1",  cor: "green" },
-    ],
+    leadsHistorico: {
+      labels: ['Jan','Fev','Mar','Abr'],
+      popup:      [4, 2, 12, 1],
+      whatsapp:   [9, 6,  5, 11],
+    },
   },
 
-  /* 📱 Instagram */
-  instagram: {
-    views:       { valor: "59.044", delta: "17.777 contas alcançadas", tipo: "neu" },
-    seguidores:  { valor: "1.400",  delta: "total acumulado",          tipo: "neu" },
-    interacoes:  { valor: "399",    delta: "51,1% seguidores",         tipo: "neu" },
-    visitas:     { valor: "969",    delta: "722 visitas · 247 links",   tipo: "neu" },
-
-    viewsFormato: [
-      { nome: "Posts",   pct: 65.6, cor: "pink"   },
-      { nome: "Stories", pct: 29.2, cor: "purple" },
-      { nome: "Reels",   pct: 5.2,  cor: "amber"  },
-    ],
-    interacoesFormato: [
-      { nome: "Posts",   pct: 90,   cor: "pink"   },
-      { nome: "Reels",   pct: 9.2,  cor: "purple" },
-      { nome: "Stories", pct: 0.8,  cor: "amber"  },
-    ],
-
-    alcance: {
-      naoSeguidores: 85.8,
-      seguidores: 14.2,
-    },
-
-    horariosAtivos: [
-      { hora: "15h", pct: 100, val: "745" },
-      { hora: "12h", pct: 93,  val: "694" },
-      { hora: "9h",  pct: 92,  val: "686" },
-      { hora: "6h",  pct: 90,  val: "667" },
-      { hora: "18h", pct: 61,  val: "457" },
-    ],
-
-    topViews: [
-      { val: "311", data: "17 mar", tipo: "Post"     },
-      { val: "287", data: "3 abr",  tipo: "Carrossel" },
-      { val: "207", data: "23 mar", tipo: "Post"     },
-      { val: "200", data: "15 mar", tipo: "Post"     },
-      { val: "172", data: "29 mar", tipo: "Reel"     },
-    ],
-    topInteracoes: [
-      { val: "14", data: "15 mar", tipo: "Post" },
-      { val: "9",  data: "2 abr",  tipo: "Post" },
-      { val: "9",  data: "29 mar", tipo: "Reel" },
-      { val: "8",  data: "7 abr",  tipo: "Post" },
-      { val: "8",  data: "25 mar", tipo: "Post" },
-    ],
-  },
-
-  /* 🔍 Microsoft Clarity */
-  clarity: {
-    usuariosUnicos:  { valor: "133",   delta: "total no período",      tipo: "neu"  },
-    totalSessoes:    { valor: "162",   delta: "novos + retornados",    tipo: "neu"  },
-    novosUsuarios:   { valor: "94,4%", delta: "153 sessões",           tipo: "neu"  },
-    retornosRapidos: { valor: "29%",   delta: "47 sessões ⚠",         tipo: "down" },
-
-    vitals: {
-      bom: 45.1, melhorar: 52.2, ruim: 2.7,
-      lcp: { val: "4,6s", nota: "⚠ meta <2,5s", tipo: "red"   },
-      inp: { val: "280ms",                        tipo: "amber" },
-      cls: { val: "0,13",                         tipo: "amber" },
-    },
-
-    origemTrafego: [
-      { nome: "Instagram",      pct: 100, val: "73", cor: "pink"   },
-      { nome: "Direct",         pct: 81,  val: "59", cor: "purple" },
-      { nome: "Facebook",       pct: 42,  val: "31", cor: "blue"   },
-      { nome: "RD Station Bio", pct: 16,  val: "12", cor: "green"  },
-      { nome: "Google",         pct: 10,  val: "7",  cor: "amber"  },
-      { nome: "TSS Studio",     pct: 3,   val: "2",  cor: "gray"   },
-    ],
+  /* 📊 Performance histórica — E-commerce */
+  historico: {
+    labels:   ['Jan/26','Fev/26','Mar/26','Abr/26'],
+    receitas: [1230.50, 4150.20, 2761.56, 5423.80],
+    visitas:  [2104, 3037, 3383, 2773],
   },
 
   /* 🚨 Alertas */
   alertas: [
-    { situacao: "Mídia paga: 608 visitas → 0 conversões rastreadas", prioridade: "Crítico",     badge: "red",    acao: "Revisar pixel e rastreamento"           },
-    { situacao: "LCP médio 4,6s — afeta 89,5% mobile",              prioridade: "Crítico",     badge: "red",    acao: "Otimizar imagens e scripts"             },
-    { situacao: "29% retornos rápidos — experiência inicial fraca",  prioridade: "Atenção",     badge: "yellow", acao: "Melhorar landing pages"                 },
-    { situacao: "Conversão 0,19% — benchmark fashion 1,5–2%",       prioridade: "Atenção",     badge: "yellow", acao: "Testar CTAs e checkout"                 },
-    { situacao: "50% dos pedidos cancelados",                        prioridade: "Atenção",     badge: "yellow", acao: "Analisar motivos de cancelamento"        },
-    { situacao: "Instagram: maior fonte real de tráfego (73 sessões)",prioridade: "Oportunidade",badge: "green",  acao: "Aumentar frequência de posts"            },
-    { situacao: "85,8% das views vêm de não-seguidores",             prioridade: "Oportunidade",badge: "green",  acao: "Apostar em conteúdo de topo de funil"    },
-    { situacao: "Horário ideal: 15h às segundas-feiras",             prioridade: "Oportunidade",badge: "green",  acao: "Programar posts nesse horário"           },
-    { situacao: "Receita +541% vs período anterior",                 prioridade: "Positivo",    badge: "blue",   acao: "Manter estratégia atual"                 },
-    { situacao: "Melhores URLs já têm LCP 1,6–2,2s",                prioridade: "Positivo",    badge: "blue",   acao: "Replicar padrão para outras páginas"     },
+    { situacao: "Campanha 'BiiO & Tech' bloqueada — hard bounces 11,60%",      prioridade: "Crítico",      badge: "red",    acao: "Higienizar lista antes do próximo envio"          },
+    { situacao: "Alfaiataria Premium: 1.581 bounces em 6.884 enviados (23%)",   prioridade: "Crítico",      badge: "red",    acao: "Segmentar e validar base antes do reenvio"        },
+    { situacao: "Taxa de conversão 0,11% — abaixo do benchmark (1,5–2%)",       prioridade: "Atenção",      badge: "yellow", acao: "Revisar CTAs, checkout e experiência mobile"      },
+    { situacao: "50% dos pedidos cancelados ou cancelados automaticamente",      prioridade: "Atenção",      badge: "yellow", acao: "Analisar motivos e revisar fluxo de pagamento"    },
+    { situacao: "Visitas à loja caíram -18% vs março",                           prioridade: "Atenção",      badge: "yellow", acao: "Reforçar mídia paga e tráfego orgânico"           },
+    { situacao: "Leads pop-up caíram de 12 (mar) para 1 (abr)",                  prioridade: "Atenção",      badge: "yellow", acao: "Revisar configuração do pop-up e segmentação"     },
+    { situacao: "Receita +96,4% vs março — R$5.424 em abril",                    prioridade: "Positivo",     badge: "blue",   acao: "Manter mix de produtos e estratégia de preço"    },
+    { situacao: "WhatsApp leads: 11 em abril vs 5 em março (+120%)",             prioridade: "Oportunidade", badge: "green",  acao: "Ampliar campanhas com botão WhatsApp"             },
+    { situacao: "Ticket médio R$1.994 — produtos premium com boa aceitação",     prioridade: "Oportunidade", badge: "green",  acao: "Explorar upsell e cross-sell na jornada"          },
+    { situacao: "Categoria Feminino lidera visitas (201) — foco de interesse",   prioridade: "Oportunidade", badge: "green",  acao: "Aumentar estoque e campanhas para esse segmento"  },
   ],
 
 };
@@ -198,12 +132,11 @@ const DADOS = {
   .section-title { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); margin: 28px 0 12px; display: flex; align-items: center; gap: 8px; }
   .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .kpi-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
   @media(max-width:700px) {
-    .kpi-grid { grid-template-columns: repeat(2,1fr); }
+    .kpi-grid, .kpi-grid-2 { grid-template-columns: repeat(2,1fr); }
     .two-col, .three-col { grid-template-columns: 1fr; }
-    .thumb-grid { grid-template-columns: repeat(3,1fr); }
     .bar-row .lbl { flex: 0 0 110px; }
-    .donut-section { flex-direction: column; align-items: flex-start; }
     body { padding: 16px; }
   }
   .kpi { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
@@ -215,10 +148,10 @@ const DADOS = {
   .card-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.05em; }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 12px; color: var(--muted); }
-  .bar-row .lbl { flex: 0 0 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-row .lbl { flex: 0 0 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .bar-track { flex: 1; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
   .bar-fill { height: 100%; border-radius: 2px; }
-  .bar-val { flex: 0 0 50px; text-align: right; color: #fff; font-weight: 500; }
+  .bar-val { flex: 0 0 70px; text-align: right; color: #fff; font-weight: 500; }
   table { width: 100%; border-collapse: collapse; font-size: 12px; }
   th { font-size: 10px; font-weight: 600; color: var(--faint); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); letter-spacing: 0.06em; text-transform: uppercase; }
   td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text); vertical-align: middle; }
@@ -229,27 +162,14 @@ const DADOS = {
   .badge-green  { background: rgba(29,158,117,0.15);  color: #5dcaa5; }
   .badge-blue   { background: rgba(55,138,221,0.15);  color: #85b7eb; }
   .badge-gray   { background: rgba(136,135,128,0.2);  color: #aaa;    }
+  .badge-orange { background: rgba(239,100,39,0.2);   color: #f09060; }
   .stat-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; flex-wrap: wrap; }
   .stat-row:last-child { border-bottom: none; }
   .stat-val { font-weight: 600; color: #fff; flex-shrink: 0; }
-  .chart-wrap { position: relative; width: 100%; height: 160px; }
-  .vitals-bar { height: 6px; border-radius: 3px; overflow: hidden; display: flex; margin-bottom: 8px; }
-  .type-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
-  .type-lbl { width: 60px; font-size: 12px; color: var(--muted); }
-  .type-pct { width: 36px; text-align: right; font-size: 12px; font-weight: 600; color: #fff; }
-  .thumb-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-  .thumb { background: var(--bg3); border-radius: 6px; padding: 10px 8px; text-align: center; }
-  .thumb .tv { font-size: 16px; font-weight: 700; color: #fff; }
-  .thumb .td { font-size: 10px; color: var(--muted); margin-top: 2px; }
-  .thumb .tt { font-size: 10px; color: var(--faint); }
-  .hours-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
-  .hours-lbl { width: 26px; font-size: 11px; color: var(--faint); }
-  .hours-val { width: 30px; text-align: right; font-size: 11px; font-weight: 600; color: #fff; }
-  .donut-section { display: flex; align-items: center; gap: 20px; }
-  .donut-wrap { position: relative; width: 90px; height: 90px; flex-shrink: 0; }
-  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .chart-wrap { position: relative; width: 100%; height: 180px; }
+  .chart-wrap-sm { position: relative; width: 100%; height: 140px; }
   footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 11px; color: var(--faint); text-align: center; }
+  .alert-note { background: rgba(226,75,74,0.08); border: 1px solid rgba(226,75,74,0.25); border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #f08080; margin-top: 10px; }
 </style>
 </head>
 <body>
@@ -266,16 +186,9 @@ function barRow(item) {
   const cor = COR[item.cor] || 'var(--purple)';
   return `<div class="bar-row"><span class="lbl">${item.nome}</span><div class="bar-track"><div class="bar-fill" style="width:${item.pct}%;background:${cor};"></div></div><span class="bar-val">${item.val}</span></div>`;
 }
-function typeRow(item) {
-  const cor = COR[item.cor] || 'var(--pink)';
-  return `<div class="type-row"><span class="type-lbl">${item.nome}</span><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:${item.pct}%;background:${cor};"></div></div><span class="type-pct">${item.pct}%</span></div>`;
-}
-function thumb(item) {
-  return `<div class="thumb"><div class="tv">${item.val}</div><div class="td">${item.data}</div><div class="tt">${item.tipo}</div></div>`;
-}
 
 const D = DADOS;
-const E = D.ecommerce, R = D.rd, I = D.instagram, C = D.clarity;
+const E = D.ecommerce, R = D.rd, H = D.historico;
 
 document.getElementById('app').innerHTML = `
 <div class="page-header">
@@ -283,7 +196,7 @@ document.getElementById('app').innerHTML = `
   <p>Período: ${D.periodo} &nbsp;·&nbsp; Atualizado em: ${D.atualizadoEm}</p>
 </div>
 
-<div class="section-title">🛒 E-commerce — Tray</div>
+<div class="section-title">🛒 E-commerce — Tray (Abril/2026)</div>
 <div class="kpi-grid">
   ${kpi('Receita total', E.receita)}
   ${kpi('Vendas realizadas', E.vendas)}
@@ -305,7 +218,7 @@ document.getElementById('app').innerHTML = `
 
 <div class="two-col" style="margin-top:8px;">
   <div class="card">
-    <div class="card-title">Mais vistos na loja</div>
+    <div class="card-title">Categorias mais visitadas</div>
     ${E.maisVistos.map(barRow).join('')}
   </div>
   <div class="card">
@@ -314,104 +227,65 @@ document.getElementById('app').innerHTML = `
   </div>
 </div>
 
-<div class="card" style="margin-top:8px;">
-  <div class="card-title">Visitas diárias à loja — Tray</div>
-  <div class="chart-wrap"><canvas id="visitasChart"></canvas></div>
+<div class="two-col" style="margin-top:8px;">
+  <div class="card">
+    <div class="card-title">Receita mensal (R$) — 2026</div>
+    <div class="chart-wrap"><canvas id="receitaChart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Visitas mensais — 2026</div>
+    <div class="chart-wrap"><canvas id="visitasChart"></canvas></div>
+  </div>
 </div>
 
-<div class="section-title">📡 RD Station — Tráfego e Leads</div>
-<div class="kpi-grid">
-  ${kpi('Total de visitas', R.totalVisitas)}
-  ${kpi('Conversões rastreadas', R.conversoes)}
+<div class="section-title">📧 E-mail Marketing — Abril/2026</div>
+<div class="card">
+  <div class="card-title">Campanhas de abril</div>
+  <table>
+    <thead><tr><th>Campanha</th><th>Data</th><th>Enviados</th><th>Entrega</th><th>Abertura</th><th>Cliques</th><th>Bounces</th></tr></thead>
+    <tbody>
+      ${D.email.campanhasAbril.map(c => `
+        <tr>
+          <td>${c.nome} ${c.status === 'bloqueada' ? '<span class="badge badge-red">Bloqueada</span>' : ''}</td>
+          <td style="color:var(--muted);">${c.data}</td>
+          <td>${c.enviados.toLocaleString('pt-BR')}</td>
+          <td>${c.entrega}</td>
+          <td>${c.abertura}</td>
+          <td>${c.cliques}</td>
+          <td style="color:${c.status === 'bloqueada' ? 'var(--red)' : 'var(--muted)'};">${c.bounces.toLocaleString('pt-BR')}</td>
+        </tr>`).join('')}
+    </tbody>
+  </table>
+  <div class="alert-note">⚠ A campanha "BiiO & Tech" (2.915 e-mails) foi bloqueada por alto índice de hard bounces (11,60%). Taxa de bounce total da campanha bloqueada: 44,84%.</div>
+</div>
+
+<div class="card" style="margin-top:8px;">
+  <div class="card-title">Histórico de campanhas anteriores</div>
+  <table>
+    <thead><tr><th>Campanha</th><th>Data</th><th>Enviados</th><th>Entrega</th><th>Abertura</th><th>Cliques</th><th>Bounces</th></tr></thead>
+    <tbody>
+      ${D.email.historico.map(c => `
+        <tr>
+          <td>${c.nome}</td>
+          <td style="color:var(--muted);">${c.data}</td>
+          <td>${c.enviados.toLocaleString('pt-BR')}</td>
+          <td>${c.entrega}</td>
+          <td>${c.abertura}</td>
+          <td>${c.cliques}</td>
+          <td style="color:var(--muted);">${c.bounces}</td>
+        </tr>`).join('')}
+    </tbody>
+  </table>
+</div>
+
+<div class="section-title">📡 RD Station — Leads (Abril/2026)</div>
+<div class="kpi-grid-2">
   ${kpi('Leads — pop-up site', R.leadsPopup)}
   ${kpi('Leads — WhatsApp', R.leadsWhatsapp)}
 </div>
-
-<div class="two-col" style="margin-top:8px;">
-  <div class="card">
-    <div class="card-title">Visitas por canal</div>
-    ${R.visitasCanal.map(barRow).join('')}
-  </div>
-  <div class="card">
-    <div class="card-title">Fonte de tráfego (sociais)</div>
-    ${R.sociais.map(barRow).join('')}
-    <div style="font-size:11px;font-weight:600;color:var(--faint);margin:10px 0 7px;text-transform:uppercase;letter-spacing:0.06em;">Referências externas</div>
-    ${R.referencias.map(barRow).join('')}
-  </div>
-</div>
-
-<div class="section-title">📱 Instagram — Redes Sociais</div>
-<div class="kpi-grid">
-  ${kpi('Visualizações totais', I.views)}
-  ${kpi('Seguidores', I.seguidores)}
-  ${kpi('Interações', I.interacoes)}
-  ${kpi('Visitas ao perfil', I.visitas)}
-</div>
-
-<div class="two-col" style="margin-top:8px;">
-  <div class="card">
-    <div class="card-title">Desempenho por formato</div>
-    <div style="margin-bottom:12px;">
-      <div style="font-size:11px;color:var(--faint);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Visualizações</div>
-      ${I.viewsFormato.map(typeRow).join('')}
-    </div>
-    <div>
-      <div style="font-size:11px;color:var(--faint);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Interações</div>
-      ${I.interacoesFormato.map(typeRow).join('')}
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-title">Alcance do público</div>
-    <div class="donut-section" style="margin-bottom:16px;">
-      <div class="donut-wrap"><canvas id="donutChart" width="90" height="90"></canvas></div>
-      <div>
-        <div class="legend-item"><span class="dot" style="background:var(--pink);"></span>Não seguidores — ${I.alcance.naoSeguidores}%</div>
-        <div class="legend-item"><span class="dot" style="background:var(--purple);"></span>Seguidores — ${I.alcance.seguidores}%</div>
-      </div>
-    </div>
-    <div style="font-size:11px;font-weight:600;color:var(--faint);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;">Horários mais ativos (segunda)</div>
-    ${I.horariosAtivos.map(h => `<div class="hours-row"><span class="hours-lbl">${h.hora}</span><div class="bar-track" style="flex:1;"><div class="bar-fill" style="width:${h.pct}%;background:var(--pink);"></div></div><span class="hours-val">${h.val}</span></div>`).join('')}
-  </div>
-</div>
-
 <div class="card" style="margin-top:8px;">
-  <div class="card-title">Top conteúdos por visualizações</div>
-  <div class="thumb-grid">${I.topViews.map(thumb).join('')}</div>
-</div>
-<div class="card" style="margin-top:8px;">
-  <div class="card-title">Top conteúdos por interações</div>
-  <div class="thumb-grid">${I.topInteracoes.map(thumb).join('')}</div>
-</div>
-
-<div class="section-title">🔍 Microsoft Clarity — Comportamento</div>
-<div class="kpi-grid">
-  ${kpi('Usuários únicos', C.usuariosUnicos)}
-  ${kpi('Total de sessões', C.totalSessoes)}
-  ${kpi('Novos usuários', C.novosUsuarios)}
-  ${kpi('Retornos rápidos', C.retornosRapidos)}
-</div>
-
-<div class="two-col" style="margin-top:8px;">
-  <div class="card">
-    <div class="card-title">Core Web Vitals · 74/100</div>
-    <div class="vitals-bar">
-      <div style="width:${C.vitals.bom}%;background:var(--green);"></div>
-      <div style="width:${C.vitals.melhorar}%;background:var(--amber);"></div>
-      <div style="width:${C.vitals.ruim}%;background:var(--red);"></div>
-    </div>
-    <div style="display:flex;gap:12px;font-size:11px;color:var(--muted);margin-bottom:14px;">
-      <span><span class="dot" style="background:var(--green);display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px;"></span>${C.vitals.bom}% bom</span>
-      <span><span class="dot" style="background:var(--amber);display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px;"></span>${C.vitals.melhorar}% melhorar</span>
-      <span><span class="dot" style="background:var(--red);display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px;"></span>${C.vitals.ruim}% ruim</span>
-    </div>
-    <div class="stat-row"><span>LCP (carregamento)</span><span class="stat-val" style="color:var(--${C.vitals.lcp.tipo});">${C.vitals.lcp.val} ${C.vitals.lcp.nota}</span></div>
-    <div class="stat-row"><span>INP (interatividade)</span><span class="stat-val" style="color:var(--${C.vitals.inp.tipo});">${C.vitals.inp.val}</span></div>
-    <div class="stat-row"><span>CLS (estabilidade)</span><span class="stat-val" style="color:var(--${C.vitals.cls.tipo});">${C.vitals.cls.val}</span></div>
-  </div>
-  <div class="card">
-    <div class="card-title">Origem do tráfego (Clarity)</div>
-    ${C.origemTrafego.map(barRow).join('')}
-  </div>
+  <div class="card-title">Histórico de leads mensais — 2026</div>
+  <div class="chart-wrap-sm"><canvas id="leadsChart"></canvas></div>
 </div>
 
 <div class="section-title">🚨 Alertas e Oportunidades</div>
@@ -427,21 +301,45 @@ document.getElementById('app').innerHTML = `
 <footer>Dashboard de Marketing · Gerado em ${D.atualizadoEm} · Para atualizar os dados, edite a seção DADOS no topo do arquivo HTML</footer>
 `;
 
-const green = '#1D9E75', pink = '#D4537E', gridColor = 'rgba(255,255,255,0.06)', tickColor = 'rgba(255,255,255,0.35)';
+const green = '#1D9E75', pink = '#D4537E', purple = '#7F77DD', amber = '#EF9F27';
+const gridColor = 'rgba(255,255,255,0.06)', tickColor = 'rgba(255,255,255,0.35)';
+const commonScales = {
+  x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } } },
+  y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } } }
+};
 
-new Chart(document.getElementById('visitasChart'), {
-  type: 'line',
+new Chart(document.getElementById('receitaChart'), {
+  type: 'bar',
   data: {
-    labels: E.visitasGrafico.labels,
-    datasets: [{ label: 'Visitas', data: E.visitasGrafico.dados, borderColor: green, backgroundColor: 'rgba(29,158,117,0.1)', fill: true, tension: 0.4, pointRadius: 3, pointBackgroundColor: green, borderWidth: 2 }]
+    labels: H.labels,
+    datasets: [{ label: 'Receita (R$)', data: H.receitas, backgroundColor: [purple+'88', purple+'88', purple+'88', green+'cc'], borderColor: [purple, purple, purple, green], borderWidth: 1, borderRadius: 4 }]
   },
-  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } } }, y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } }, min: 10 } } }
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: commonScales }
 });
 
-new Chart(document.getElementById('donutChart'), {
-  type: 'doughnut',
-  data: { labels: ['Não seguidores','Seguidores'], datasets: [{ data: [I.alcance.naoSeguidores, I.alcance.seguidores], backgroundColor: [pink, '#7F77DD'], borderWidth: 0 }] },
-  options: { responsive: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, cutout: '70%' }
+new Chart(document.getElementById('visitasChart'), {
+  type: 'bar',
+  data: {
+    labels: H.labels,
+    datasets: [{ label: 'Visitas', data: H.visitas, backgroundColor: [pink+'55', pink+'55', pink+'55', amber+'99'], borderColor: [pink, pink, pink, amber], borderWidth: 1, borderRadius: 4 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: commonScales }
+});
+
+new Chart(document.getElementById('leadsChart'), {
+  type: 'line',
+  data: {
+    labels: DADOS.rd.leadsHistorico.labels,
+    datasets: [
+      { label: 'Pop-up', data: DADOS.rd.leadsHistorico.popup, borderColor: pink, backgroundColor: pink+'22', fill: true, tension: 0.4, pointRadius: 4, borderWidth: 2 },
+      { label: 'WhatsApp', data: DADOS.rd.leadsHistorico.whatsapp, borderColor: green, backgroundColor: green+'22', fill: true, tension: 0.4, pointRadius: 4, borderWidth: 2 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: tickColor, font: { size: 11 }, boxWidth: 10 } } },
+    scales: commonScales
+  }
 });
 </script>
 </body>
